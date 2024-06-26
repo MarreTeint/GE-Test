@@ -1,5 +1,6 @@
 import './index.css';
-import { MyClass } from './example-unit';
+import { Watch } from './watch';
 
-const a = new MyClass(2);
-console.log('number is', a.get());
+const a = new Watch(1, 10);
+// Met a jour l'affichage
+setInterval(()=>{document.getElementById('time').innerText = a.getTime().toString();}, 100);
