@@ -29,6 +29,20 @@ export class Watch{
         }, 100);
     }
 
+    toHTML(){
+        return `
+        <div class="watch">
+            <div class="watch__time">${this.formatTime(this.time.getHours())}:${this.formatTime(this.time.getMinutes())}:${this.formatTime(this.time.getSeconds())}</div>
+            <div class="watch__mode">${this.mode}</div>
+            <div class="watch__light">${this.light}</div>
+        </div>
+        `;
+    }
+
+    private formatTime(time: number): string {
+        return time.toString().padStart(2, '0');
+    }
+
     getTime(){
         return this.time;
     }
@@ -61,7 +75,7 @@ export class Watch{
         return this.light;
     }
 
-    setLight(light: boolean){
-        this.light = light;
+    setLight(){
+        this.light = !this.light;
     }
 }

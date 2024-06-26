@@ -1,6 +1,6 @@
 import './index.css';
 import { Watch } from './watch';
 
-const a = new Watch(1, 10);
+const a = new Watch();
 // Met a jour l'affichage
-setInterval(()=>{document.getElementById('time').innerText = a.getTime().toString();}, 100);
+setInterval(()=>{document.getElementById('time').innerHTML = a.toHTML();}, 100);
