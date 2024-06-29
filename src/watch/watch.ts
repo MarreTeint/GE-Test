@@ -8,6 +8,8 @@ export class Watch{
     private light: boolean;
     private h24: boolean;
     private am: boolean; // déterminer si on est en AM ou PM
+    private initHourOffset: number;
+    private initMinuteOffset: number;
 
     constructor(hourOffset: number = 0, minuteOffset: number = 0){
         this.hourOffset = hourOffset;
@@ -22,6 +24,8 @@ export class Watch{
         this.light = false;
         this.h24 = true;
         this.am = true;
+        this.initHourOffset = hourOffset;
+        this.initMinuteOffset = minuteOffset;
         this.updateTime();
     }
 
@@ -60,6 +64,7 @@ export class Watch{
             <button id="btn-up">Increase</button>
             <button id="btn-light">Light</button>
             <button id="h24-ampm">24 - AM/PM</button>
+            <button id="btn-reset">Reset</button>
         </div>
         `;
     }
@@ -81,6 +86,11 @@ export class Watch{
         }
     }
 
+    private reset(){
+        this.setHourOffset(this.initHourOffset);
+        this.setMinuteOffset(this.initMinuteOffset);
+    }
+
     print(){
         document.getElementById('app').innerHTML = this.toHTML();
         document.getElementById(`btn-mode`).addEventListener('click', () => {
@@ -94,6 +104,9 @@ export class Watch{
         });
         document.getElementById(`h24-ampm`).addEventListener('click', () => {
             this.setH24();
+        });
+        document.getElementById(`btn-reset`).addEventListener('click', () => {
+            this.reset();
         });
 
         // Met a jour l'affichage
