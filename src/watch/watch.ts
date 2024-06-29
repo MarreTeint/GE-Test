@@ -26,21 +26,58 @@ export class Watch{
             a.setHours(a.getHours() + this.hourOffset);
             a.setMinutes(a.getMinutes() + this.minuteOffset);
             this.time = a;
-        }, 100);
+        }, 200);
     }
 
-    toHTML(){
+    private watchHTML(){
+        return `<div class="watch_time ${this.light ? "light" : "dark"}">${this.formatTime(this.time.getHours())}:${this.formatTime(this.time.getMinutes())}:${this.formatTime(this.time.getSeconds())}</div>`
+    }
+
+    private toHTML(){
         return `
-        <div class="watch">
-            <div class="watch__time">${this.formatTime(this.time.getHours())}:${this.formatTime(this.time.getMinutes())}:${this.formatTime(this.time.getSeconds())}</div>
-            <div class="watch__mode">${this.mode}</div>
-            <div class="watch__light">${this.light}</div>
+        <div class="watch"></div>
+        <div class="buttons">
+            <button id="mode">Mode</button>
+            <button id="up">Increase</button>
+            <button id="light">Light</button>
         </div>
         `;
     }
 
+    print(){
+        document.getElementById('app').innerHTML = this.toHTML();
+        document.getElementById(`mode`).addEventListener('click', () => {
+            this.setMode();
+        });
+        document.getElementById(`light`).addEventListener('click', () => {
+            this.setLight();
+        });
+        document.getElementById(`up`).addEventListener('click', () => {
+            this.increase();
+        });
+
+        // Met a jour l'affichage
+        setInterval(() => {
+            document.querySelector('.watch').innerHTML = this.watchHTML();
+        }, 1);
+    }
+    
+
     private formatTime(time: number): string {
         return time.toString().padStart(2, '0');
+    }
+
+    private increase(){
+        switch(this.mode){
+            case 1:
+                this.setHourOffset(this.hourOffset + 1);
+                break;
+            case 2:
+                this.setMinuteOffset(this.minuteOffset + 1);
+                break;
+            default:
+                break;
+        }
     }
 
     getTime(){
@@ -69,6 +106,7 @@ export class Watch{
 
     setMode(){
         this.mode = (this.mode+1)%3;
+        console.log(this.mode);
     }
 
     getLight(){
