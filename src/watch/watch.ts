@@ -1,9 +1,9 @@
 export class Watch{
-    time: Date; // Ne pas s'embeter a créer nos fonctions de date, on utilise celles de javascript
-    hourOffset: number;
-    minuteOffset: number;
-    mode: number;
-    light: boolean;
+    private time: Date; // Ne pas s'embeter a créer nos fonctions de date, on utilise celles de javascript
+    private hourOffset: number;
+    private minuteOffset: number;
+    private mode: number;
+    private light: boolean;
 
     constructor(hourOffset: number = 0, minuteOffset: number = 0){
         this.hourOffset = hourOffset;
@@ -37,31 +37,12 @@ export class Watch{
         return `
         <div class="watch"></div>
         <div class="buttons">
-            <button id="mode">Mode</button>
-            <button id="up">Increase</button>
-            <button id="light">Light</button>
+            <button id="btn-mode">Mode</button>
+            <button id="btn-up">Increase</button>
+            <button id="btn-light">Light</button>
         </div>
         `;
     }
-
-    print(){
-        document.getElementById('app').innerHTML = this.toHTML();
-        document.getElementById(`mode`).addEventListener('click', () => {
-            this.setMode();
-        });
-        document.getElementById(`light`).addEventListener('click', () => {
-            this.setLight();
-        });
-        document.getElementById(`up`).addEventListener('click', () => {
-            this.increase();
-        });
-
-        // Met a jour l'affichage
-        setInterval(() => {
-            document.querySelector('.watch').innerHTML = this.watchHTML();
-        }, 1);
-    }
-    
 
     private formatTime(time: number): string {
         return time.toString().padStart(2, '0');
@@ -78,6 +59,24 @@ export class Watch{
             default:
                 break;
         }
+    }
+
+    print(){
+        document.getElementById('app').innerHTML = this.toHTML();
+        document.getElementById(`btn-mode`).addEventListener('click', () => {
+            this.setMode();
+        });
+        document.getElementById(`btn-light`).addEventListener('click', () => {
+            this.setLight();
+        });
+        document.getElementById(`btn-up`).addEventListener('click', () => {
+            this.increase();
+        });
+
+        // Met a jour l'affichage
+        setInterval(() => {
+            document.querySelector('.watch').innerHTML = this.watchHTML();
+        }, 1);
     }
 
     getTime(){
