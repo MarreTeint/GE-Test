@@ -1,9 +1,13 @@
 export class Watch{
-    private time: Date; // Ne pas s'embeter a créer nos fonctions de date, on utilise celles de javascript
+    private hour: number;
+    private minute: number;
+    private second: number;
     private hourOffset: number;
     private minuteOffset: number;
     private mode: number;
     private light: boolean;
+    private h24: boolean;
+    private am: boolean; // déterminer si on est en AM ou PM
 
     constructor(hourOffset: number = 0, minuteOffset: number = 0){
         this.hourOffset = hourOffset;
@@ -11,9 +15,13 @@ export class Watch{
         var a = new Date();
         a.setHours(a.getHours() + hourOffset);
         a.setMinutes(a.getMinutes() + minuteOffset);
-        this.time = a;
+        this.hour = a.getHours();
+        this.minute = a.getMinutes();
+        this.second = a.getSeconds();
         this.mode = 0;
         this.light = false;
+        this.h24 = true;
+        this.am = true;
         this.updateTime();
     }
 
@@ -25,12 +33,23 @@ export class Watch{
             var a = new Date();
             a.setHours(a.getHours() + this.hourOffset);
             a.setMinutes(a.getMinutes() + this.minuteOffset);
-            this.time = a;
-        }, 200);
+            if(!this.h24){
+                if(a.getHours() > 12){
+                    a.setHours(a.getHours() - 12);
+                    this.am = false;
+                }else{
+                    this.am = true;
+                }
+            }
+
+            this.hour = a.getHours();
+            this.minute = a.getMinutes();
+            this.second = a.getSeconds();
+        }, 1);
     }
 
     private watchHTML(){
-        return `<div class="watch_time ${this.light ? "light" : "dark"}">${this.formatTime(this.time.getHours())}:${this.formatTime(this.time.getMinutes())}:${this.formatTime(this.time.getSeconds())}</div>`
+        return `<div class="watch_time ${this.light ? "light" : "dark"}">${this.formatTime(this.hour)}:${this.formatTime(this.minute)}:${this.formatTime(this.second)} ${!this.h24 ? this.am ? "am" : "pm" : ""}</div>`
     }
 
     private toHTML(){
@@ -40,6 +59,7 @@ export class Watch{
             <button id="btn-mode">Mode</button>
             <button id="btn-up">Increase</button>
             <button id="btn-light">Light</button>
+            <button id="h24-ampm">24 - AM/PM</button>
         </div>
         `;
     }
@@ -72,15 +92,14 @@ export class Watch{
         document.getElementById(`btn-up`).addEventListener('click', () => {
             this.increase();
         });
+        document.getElementById(`h24-ampm`).addEventListener('click', () => {
+            this.setH24();
+        });
 
         // Met a jour l'affichage
         setInterval(() => {
             document.querySelector('.watch').innerHTML = this.watchHTML();
         }, 1);
-    }
-
-    getTime(){
-        return this.time;
     }
 
     getHourOffset(){
@@ -114,5 +133,13 @@ export class Watch{
 
     setLight(){
         this.light = !this.light;
+    }
+
+    getH24(){
+        return this.h24;
+    }
+
+    setH24(){
+        this.h24 = !this.h24;
     }
 }
