@@ -60,11 +60,11 @@ export class Watch{
         return `
         <div class="watch"></div>
         <div class="buttons">
-            <button id="btn-mode">Mode</button>
-            <button id="btn-up">Increase</button>
-            <button id="btn-light">Light</button>
-            <button id="h24-ampm">24 - AM/PM</button>
-            <button id="btn-reset">Reset</button>
+            <button class="btn-mode">Mode</button>
+            <button class="btn-up">Increase</button>
+            <button class="btn-light">Light</button>
+            <button class="h24-ampm">24 - AM/PM</button>
+            <button class="btn-reset">Reset</button>
         </div>
         `;
     }
@@ -91,27 +91,28 @@ export class Watch{
         this.setMinuteOffset(this.initMinuteOffset);
     }
 
-    print(){
-        document.getElementById('app').innerHTML = this.toHTML();
-        document.getElementById(`btn-mode`).addEventListener('click', () => {
+    print(location:string){
+        const cont = document.querySelector(location);
+        cont.innerHTML = this.toHTML();
+        cont.querySelector(`.btn-mode`).addEventListener('click', () => {
             this.setMode();
         });
-        document.getElementById(`btn-light`).addEventListener('click', () => {
+        cont.querySelector(`.btn-light`).addEventListener('click', () => {
             this.setLight();
         });
-        document.getElementById(`btn-up`).addEventListener('click', () => {
+        cont.querySelector(`.btn-up`).addEventListener('click', () => {
             this.increase();
         });
-        document.getElementById(`h24-ampm`).addEventListener('click', () => {
+        cont.querySelector(`.h24-ampm`).addEventListener('click', () => {
             this.setH24();
         });
-        document.getElementById(`btn-reset`).addEventListener('click', () => {
+        cont.querySelector(`.btn-reset`).addEventListener('click', () => {
             this.reset();
         });
 
         // Met a jour l'affichage
         setInterval(() => {
-            document.querySelector('.watch').innerHTML = this.watchHTML();
+            cont.querySelector('.watch').innerHTML = this.watchHTML();
         }, 1);
     }
 

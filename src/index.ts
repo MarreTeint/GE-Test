@@ -1,6 +1,6 @@
 import './index.css';
-import { Watch } from './watch';
+import { WatchCollection } from './watch';
 
-const a = new Watch();
+const a = new WatchCollection("#app");
 // Met a jour l'affichage
 a.print();
