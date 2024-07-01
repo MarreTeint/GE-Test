@@ -4,8 +4,8 @@ export class WatchCollection{
     private watches: Watch[];
     private location: string;
 
-    constructor(location: string){
-        this.watches = [];
+    constructor(location: string, watches: Watch[] = []){
+        this.watches = watches;
         this.location = location;
     }
 
